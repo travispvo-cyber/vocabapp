@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { mockConcepts } from '../lib/mock-data'
-import { getCategoryColor, getDifficultyColor, cn, styles } from '../lib/utils'
+import { getDifficultyColor, cn, styles } from '../lib/utils'
 import { DIFFICULTY_LABELS } from '../types'
 
 export default function Bookmarks() {
@@ -20,20 +20,20 @@ export default function Bookmarks() {
     <div className="space-y-6 fade-in">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+        <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
           Saved Concepts
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">
+        </p>
+        <p className="text-gray-500 dark:text-gray-400">
           {bookmarkedConcepts.length} concept{bookmarkedConcepts.length !== 1 ? 's' : ''} saved
         </p>
       </div>
 
       {/* Bookmarks List */}
       {bookmarkedConcepts.length === 0 ? (
-        <div className={cn(styles.card, 'text-center py-16')}>
-          <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+        <div className={cn(styles.card, 'text-center py-16 border border-gray-100 dark:border-gray-800')}>
+          <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center">
             <svg
-              className="h-10 w-10 text-gray-400"
+              className="h-10 w-10 text-rose-400"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
@@ -59,19 +59,19 @@ export default function Bookmarks() {
       ) : (
         <div className="space-y-3">
           {bookmarkedConcepts.map(concept => (
-            <div key={concept.id} className={cn(styles.cardHover, 'flex items-start gap-4 p-4')}>
+            <div key={concept.id} className={cn(styles.cardHover, 'flex items-start gap-4 p-4 border border-gray-100 dark:border-gray-800')}>
               <Link
                 to={`/concept/${concept.id}`}
                 className="flex-1 min-w-0"
               >
-                <h3 className="font-semibold text-gray-900 dark:text-white">
+                <h3 className="font-serif text-lg text-gray-900 dark:text-white">
                   {concept.term}
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">
                   {concept.definition}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <span className={cn(styles.badge, getCategoryColor(concept.category))}>
+                  <span className={cn(styles.badge, 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-400')}>
                     {concept.category.replace('_', ' ')}
                   </span>
                   <span className={cn(styles.badge, getDifficultyColor(concept.difficulty))}>
@@ -81,7 +81,7 @@ export default function Bookmarks() {
               </Link>
               <button
                 onClick={() => removeBookmark(concept.id)}
-                className="p-2.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-all duration-200 active:scale-95"
+                className="p-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-full transition-all duration-200 active:scale-95"
                 aria-label="Remove bookmark"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">

@@ -4,10 +4,26 @@ import { getMockDailyConcept, mockConcepts } from '../lib/mock-data'
 import { getDifficultyColor, styles, cn } from '../lib/utils'
 import { DIFFICULTY_LABELS } from '../types'
 
+// Mock user stats - will come from Supabase later
+const mockUserStats = {
+  streak: 7,
+  wordsLearnedToday: 3,
+  dailyGoal: 5,
+  totalWords: 42,
+}
+
+function getGreeting(): string {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 17) return 'Good afternoon'
+  return 'Good evening'
+}
+
 export default function Home() {
   const dailyConcept = getMockDailyConcept()
   const recentConcepts = mockConcepts.slice(0, 5)
   const [isBookmarked, setIsBookmarked] = useState(false)
+  const progressPercent = (mockUserStats.wordsLearnedToday / mockUserStats.dailyGoal) * 100
 
   const handleBookmark = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -17,14 +33,58 @@ export default function Home() {
 
   return (
     <div className="space-y-8 fade-in">
-      {/* Header */}
-      <div className="space-y-1">
-        <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
-          Concept of the Day
-        </p>
-        <p className="text-gray-500 dark:text-gray-400">
-          Learn something new every day
-        </p>
+      {/* Greeting & Stats Header */}
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <p className="text-lg text-gray-500 dark:text-gray-400">
+            {getGreeting()}
+          </p>
+          <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
+            Concept of the Day
+          </p>
+        </div>
+
+        {/* Stats Cluster */}
+        <div className="flex items-center gap-4">
+          {/* Streak Counter */}
+          <div className="flex items-center gap-1.5">
+            <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center">
+              <svg className="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <span className="text-sm font-bold text-gray-900 dark:text-white">{mockUserStats.streak}</span>
+          </div>
+
+          {/* Progress Ring */}
+          <div className="relative w-10 h-10">
+            <svg className="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+              <circle
+                className="text-gray-200 dark:text-gray-800"
+                strokeWidth="3"
+                stroke="currentColor"
+                fill="none"
+                r="15.9"
+                cx="18"
+                cy="18"
+              />
+              <circle
+                className="text-violet-500"
+                strokeWidth="3"
+                strokeLinecap="round"
+                stroke="currentColor"
+                fill="none"
+                r="15.9"
+                cx="18"
+                cy="18"
+                strokeDasharray={`${progressPercent}, 100`}
+              />
+            </svg>
+            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-900 dark:text-white">
+              {mockUserStats.wordsLearnedToday}/{mockUserStats.dailyGoal}
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Daily Concept Card - Hero Style */}
