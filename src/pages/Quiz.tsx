@@ -111,6 +111,10 @@ export default function Quiz() {
     )
   }
 
+  const tryDifferentWords = () => {
+    startQuiz(questions.length)
+  }
+
   if (state === 'result') {
     const correct = answers.filter(Boolean).length
     const score = calculateQuizScore(correct, answers.length)
@@ -118,14 +122,15 @@ export default function Quiz() {
     const isGoodScore = score >= 60
 
     return (
-      <div className="space-y-8 fade-in">
+      <div className="space-y-6 fade-in">
         <div className="text-center space-y-1">
           <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
             Quiz Complete
           </p>
         </div>
 
-        <div className={cn(styles.card, 'text-center py-12 celebrate border border-gray-100 dark:border-gray-800')}>
+        {/* Score Card */}
+        <div className={cn(styles.card, 'text-center py-10 celebrate border border-gray-100 dark:border-gray-800')}>
           <div className={cn(
             'text-6xl font-bold mb-2',
             isGreatScore ? 'text-emerald-500' : isGoodScore ? 'text-violet-500' : 'text-rose-400'
@@ -140,12 +145,61 @@ export default function Quiz() {
           </p>
         </div>
 
-        <div className="flex gap-3">
-          <button onClick={restart} className={cn(styles.btnSecondary, 'flex-1 py-3')}>
-            Try Again
-          </button>
-          <Link to="/" className={cn(styles.btnPrimary, 'flex-1 py-3 justify-center')}>
-            Home
+        {/* Results Breakdown */}
+        <div className="space-y-3">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Results Breakdown
+          </h3>
+          <div className="space-y-2">
+            {questions.map((q, idx) => (
+              <div
+                key={idx}
+                className={cn(
+                  'flex items-center gap-3 p-3 rounded-xl border',
+                  answers[idx]
+                    ? 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20'
+                    : 'bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20'
+                )}
+              >
+                <div className={cn(
+                  'w-6 h-6 rounded-full flex items-center justify-center shrink-0',
+                  answers[idx] ? 'bg-emerald-500' : 'bg-rose-500'
+                )}>
+                  {answers[idx] ? (
+                    <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-serif text-gray-900 dark:text-white truncate">
+                    {q.concept.term}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    {q.concept.definition}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          <div className="flex gap-3">
+            <button onClick={restart} className={cn(styles.btnSecondary, 'flex-1 py-3')}>
+              Try Same Words
+            </button>
+            <button onClick={tryDifferentWords} className={cn(styles.btnPrimary, 'flex-1 py-3')}>
+              Different Words
+            </button>
+          </div>
+          <Link to="/" className={cn(styles.btnGhost, 'w-full py-3 justify-center')}>
+            Back to Home
           </Link>
         </div>
       </div>
@@ -224,11 +278,29 @@ export default function Quiz() {
         })}
       </div>
 
-      {/* Next Button */}
+      {/* Answer Explanation */}
       {selectedAnswer !== null && (
-        <button onClick={nextQuestion} className={cn(styles.btnPrimary, 'w-full py-4 text-lg fade-in')}>
-          {currentIndex < questions.length - 1 ? 'Next Question' : 'See Results'}
-        </button>
+        <div className="space-y-4 fade-in">
+          <div className={cn(
+            styles.card,
+            'p-4 border',
+            selectedAnswer === question.correctIndex
+              ? 'border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10'
+              : 'border-rose-200 dark:border-rose-500/30 bg-rose-50 dark:bg-rose-500/10'
+          )}>
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+              {selectedAnswer === question.correctIndex ? 'Correct!' : `The answer is: ${question.concept.term}`}
+            </p>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              {question.concept.explanation || question.concept.definition}
+            </p>
+          </div>
+
+          {/* Next Button */}
+          <button onClick={nextQuestion} className={cn(styles.btnPrimary, 'w-full py-4 text-lg')}>
+            {currentIndex < questions.length - 1 ? 'Next Question' : 'See Results'}
+          </button>
+        </div>
       )}
     </div>
   )

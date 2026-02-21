@@ -132,18 +132,32 @@ export default function Explore() {
       {/* Concept List */}
       <div className="space-y-3">
         {filteredConcepts.length === 0 ? (
-          <div className={cn(styles.card, 'text-center py-12')}>
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <div className={cn(styles.card, 'text-center py-12 border border-gray-100 dark:border-gray-800')}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center">
+              <svg className="h-8 w-8 text-violet-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
             </div>
-            <p className="text-gray-500 dark:text-gray-400 font-medium">
-              No concepts match your filters
+            <p className="text-lg font-medium text-gray-900 dark:text-white">
+              {searchQuery ? `No results for "${searchQuery}"` : 'No concepts found'}
             </p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-              Try adjusting your category or difficulty selection
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 max-w-xs mx-auto">
+              {searchQuery
+                ? 'Try a different search term or adjust your filters'
+                : 'Try selecting different categories or difficulty levels'}
             </p>
+            {(searchQuery || selectedCategory !== 'all' || selectedDifficulties.size < 3) && (
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedCategory('all')
+                  setSelectedDifficulties(new Set([1, 2, 3]))
+                }}
+                className={cn(styles.btnSecondary, 'mt-4')}
+              >
+                Clear All Filters
+              </button>
+            )}
           </div>
         ) : (
           filteredConcepts.map(concept => (
