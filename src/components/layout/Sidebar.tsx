@@ -17,10 +17,10 @@ const navItems = [
 
 export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
   return (
-    <div className="flex h-full flex-col bg-gray-50/50 dark:bg-gray-900/50 border-r border-gray-200/50 dark:border-gray-800/50">
+    <div className="flex h-full flex-col bg-white dark:bg-gray-950 border-r border-gray-200/50 dark:border-gray-800/50">
       {/* Logo */}
       <div className="flex h-16 items-center px-6">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">DataVocab</h1>
+        <h1 className="text-xl font-bold text-violet-600 dark:text-violet-400 tracking-tight">DataVocab</h1>
       </div>
 
       {/* Navigation */}
@@ -33,7 +33,7 @@ export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
               cn(
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400'
+                  ? 'bg-violet-500/10 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400'
                   : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800/50'
               )
             }

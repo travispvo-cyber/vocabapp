@@ -10,7 +10,7 @@ interface LayoutProps {
 
 export default function Layout({ theme, onToggleTheme }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Desktop Sidebar */}
       <aside className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <Sidebar theme={theme} onToggleTheme={onToggleTheme} />

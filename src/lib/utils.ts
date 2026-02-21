@@ -49,21 +49,22 @@ export function calculateQuizScore(correct: number, total: number): number {
   return Math.round((correct / total) * 100)
 }
 
-// Common UI class strings - iOS-inspired polish
+// Common UI class strings - Vocabulary App inspired
 export const styles = {
-  // Cards with premium feel
-  card: 'bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-sm p-5 transition-all duration-200',
-  cardHover: 'bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-sm p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5',
+  // Cards with premium feel - white cards, subtle shadow
+  card: 'bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-5 transition-all duration-200',
+  cardHover: 'bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5',
 
-  // Buttons with iOS feel
+  // Buttons - Purple primary (Vocabulary app style)
   btn: 'inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95',
-  btnPrimary: 'inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 active:scale-95 bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500',
+  btnPrimary: 'inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 active:scale-95 bg-violet-600 text-white hover:bg-violet-700 dark:bg-violet-500 dark:hover:bg-violet-400',
   btnSecondary: 'inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 active:scale-95 bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700',
   btnGhost: 'inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800/50',
+  btnAccent: 'inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400 active:scale-95 bg-gradient-to-r from-orange-400 to-rose-400 text-white hover:from-orange-500 hover:to-rose-500',
 
   // Pill badges
   badge: 'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium',
 
   // Input fields
-  input: 'block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500',
+  input: 'block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500',
 }

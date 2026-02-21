@@ -2,6 +2,31 @@
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Lora", Georgia, "Times New Roman", serif;
+
+  /* Vocabulary App Color Palette */
+  --color-primary-50: #F5F3FF;
+  --color-primary-100: #EDE9FE;
+  --color-primary-200: #DDD6FE;
+  --color-primary-300: #C4B5FD;
+  --color-primary-400: #A78BFA;
+  --color-primary-500: #8B5CF6;
+  --color-primary-600: #7C3AED;
+  --color-primary-700: #6D28D9;
+  --color-primary-800: #5B21B6;
+  --color-primary-900: #4C1D95;
+
+  /* Coral Accent */
+  --color-accent-50: #FFF5F5;
+  --color-accent-100: #FFE4E1;
+  --color-accent-200: #FFCDC7;
+  --color-accent-300: #FFB0A6;
+  --color-accent-400: #FF8577;
+  --color-accent-500: #FF6B5B;
+  --color-accent-600: #E5534A;
+  --color-accent-700: #CC3D36;
+  --color-accent-800: #B32D28;
+  --color-accent-900: #991F1C;
 }
 
 @layer base {
@@ -13,11 +38,17 @@
   }
 
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-50;
+    @apply bg-white text-gray-900 dark:bg-black dark:text-gray-50;
   }
 
   h1, h2, h3, h4, h5, h6 {
     line-height: 1.3;
+  }
+
+  /* Serif font for terms/words */
+  .font-serif {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
   }
 }
 

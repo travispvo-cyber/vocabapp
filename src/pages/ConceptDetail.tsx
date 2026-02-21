@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState } from 'react'
 import { getMockConceptById } from '../lib/mock-data'
-import { getCategoryColor, getDifficultyColor, cn, styles } from '../lib/utils'
+import { getDifficultyColor, cn, styles } from '../lib/utils'
 import { DIFFICULTY_LABELS } from '../types'
 
 export default function ConceptDetail() {
@@ -48,11 +48,11 @@ export default function ConceptDetail() {
       {/* Hero Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-3">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+          <h1 className="text-4xl font-serif text-gray-900 dark:text-white">
             {concept.term}
           </h1>
           <div className="flex flex-wrap gap-2">
-            <span className={cn(styles.badge, getCategoryColor(concept.category))}>
+            <span className={cn(styles.badge, 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-400')}>
               {concept.category.replace('_', ' ')}
             </span>
             <span className={cn(styles.badge, getDifficultyColor(concept.difficulty))}>
@@ -65,8 +65,8 @@ export default function ConceptDetail() {
           className={cn(
             'p-2.5 rounded-full transition-all duration-200',
             isBookmarked
-              ? 'text-red-500 bg-red-50 dark:bg-red-500/10'
-              : 'text-gray-400 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              ? 'text-rose-500 bg-rose-50 dark:bg-rose-500/10'
+              : 'text-gray-400 hover:text-rose-500 hover:bg-gray-100 dark:hover:bg-gray-800'
           )}
           aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
         >

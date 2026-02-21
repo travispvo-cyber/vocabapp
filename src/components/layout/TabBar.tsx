@@ -11,7 +11,7 @@ const tabs = [
 
 export default function TabBar() {
   return (
-    <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-800/50 px-2 pb-safe">
+    <div className="bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-800/50 px-2 pb-safe">
       <div className="flex justify-around">
         {tabs.map(tab => (
           <NavLink
@@ -21,7 +21,7 @@ export default function TabBar() {
               cn(
                 'flex flex-col items-center gap-0.5 py-2 px-4 transition-all duration-200 relative',
                 isActive
-                  ? 'text-blue-500 dark:text-blue-400'
+                  ? 'text-violet-600 dark:text-violet-400'
                   : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400'
               )
             }
@@ -31,7 +31,7 @@ export default function TabBar() {
                 <tab.icon className={cn('h-6 w-6 transition-transform duration-200', isActive && 'scale-105')} />
                 <span className="text-[10px] font-medium">{tab.label}</span>
                 {isActive && (
-                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-blue-500 dark:bg-blue-400" />
+                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-violet-600 dark:bg-violet-400" />
                 )}
               </>
             )}
