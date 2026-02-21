@@ -1,15 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
+import { useAuth } from '../lib/auth'
 import { styles, cn } from '../lib/utils'
 
 export default function Auth() {
-  const handleGoogleSignIn = () => {
-    // TODO: Implement Supabase Google OAuth
-    console.log('Google sign in')
+  const { user, loading, signInWithGoogle, signInWithGitHub, isConfigured } = useAuth()
+
+  // Redirect if already logged in
+  if (user) {
+    return <Navigate to="/" replace />
   }
 
-  const handleGitHubSignIn = () => {
-    // TODO: Implement Supabase GitHub OAuth
-    console.log('GitHub sign in')
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black">
+        <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
   }
 
   return (
@@ -41,11 +47,25 @@ export default function Auth() {
             </p>
           </div>
 
+          {!isConfigured && (
+            <div className="p-3 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 rounded-xl">
+              <p className="text-sm text-amber-700 dark:text-amber-400 text-center">
+                Authentication not configured. Set Supabase environment variables to enable.
+              </p>
+            </div>
+          )}
+
           <div className="space-y-3">
             {/* Google Button */}
             <button
-              onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3.5 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 active:scale-[0.98]"
+              onClick={signInWithGoogle}
+              disabled={!isConfigured}
+              className={cn(
+                "w-full flex items-center justify-center gap-3 px-4 py-3.5 border border-gray-200 dark:border-gray-700 rounded-xl transition-all duration-200 active:scale-[0.98]",
+                isConfigured
+                  ? "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  : "opacity-50 cursor-not-allowed"
+              )}
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
@@ -72,8 +92,14 @@ export default function Auth() {
 
             {/* GitHub Button */}
             <button
-              onClick={handleGitHubSignIn}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3.5 bg-gray-900 dark:bg-gray-800 text-white rounded-xl hover:bg-gray-800 dark:hover:bg-gray-700 transition-all duration-200 active:scale-[0.98]"
+              onClick={signInWithGitHub}
+              disabled={!isConfigured}
+              className={cn(
+                "w-full flex items-center justify-center gap-3 px-4 py-3.5 bg-gray-900 dark:bg-gray-800 text-white rounded-xl transition-all duration-200 active:scale-[0.98]",
+                isConfigured
+                  ? "hover:bg-gray-800 dark:hover:bg-gray-700"
+                  : "opacity-50 cursor-not-allowed"
+              )}
             >
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -91,7 +117,7 @@ export default function Auth() {
               <div className="w-full border-t border-gray-200 dark:border-gray-800" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+              <span className="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
                 or
               </span>
             </div>

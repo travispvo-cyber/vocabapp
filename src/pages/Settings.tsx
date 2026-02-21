@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../lib/auth'
 import { CATEGORIES, DIFFICULTY_LABELS, type Category, type Difficulty, type Theme } from '../types'
 import { cn } from '../lib/utils'
 
@@ -8,6 +10,7 @@ interface SettingsProps {
 }
 
 export default function Settings({ theme, onToggleTheme }: SettingsProps) {
+  const { user, signOut, isConfigured } = useAuth()
   const [difficultyLevel, setDifficultyLevel] = useState<Difficulty>(1)
   const [selectedCategories, setSelectedCategories] = useState<Set<Category>>(
     new Set(CATEGORIES.map(c => c.value))
@@ -155,9 +158,50 @@ export default function Settings({ theme, onToggleTheme }: SettingsProps) {
           Account
         </h2>
         <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
-          <button className="flex items-center justify-center w-full p-4 text-rose-500 font-semibold hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors">
-            Sign Out
-          </button>
+          {user ? (
+            <>
+              {/* User Info */}
+              <div className="flex items-center gap-3 p-4 border-b border-gray-100 dark:border-gray-800">
+                {user.user_metadata?.avatar_url ? (
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center">
+                    <span className="text-lg font-semibold text-violet-600 dark:text-violet-400">
+                      {(user.email?.[0] || 'U').toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 dark:text-white truncate">
+                    {user.user_metadata?.full_name || user.email}
+                  </p>
+                  {user.user_metadata?.full_name && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                      {user.email}
+                    </p>
+                  )}
+                </div>
+              </div>
+              {/* Sign Out Button */}
+              <button
+                onClick={signOut}
+                className="flex items-center justify-center w-full p-4 text-rose-500 font-semibold hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className="flex items-center justify-center w-full p-4 text-violet-600 dark:text-violet-400 font-semibold hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors"
+            >
+              {isConfigured ? 'Sign In' : 'Sign In (Not Configured)'}
+            </Link>
+          )}
         </div>
       </div>
 
