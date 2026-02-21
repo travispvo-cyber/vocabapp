@@ -1,0 +1,154 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { mockConcepts } from '../lib/mock-data'
+import { getCategoryColor, getDifficultyColor, cn, styles } from '../lib/utils'
+import { CATEGORIES, DIFFICULTY_LABELS, type Category, type Difficulty } from '../types'
+
+export default function Explore() {
+  const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all')
+  const [selectedDifficulties, setSelectedDifficulties] = useState<Set<Difficulty>>(new Set([1, 2, 3]))
+
+  const filteredConcepts = mockConcepts.filter(concept => {
+    if (selectedCategory !== 'all' && concept.category !== selectedCategory) {
+      return false
+    }
+    if (!selectedDifficulties.has(concept.difficulty)) {
+      return false
+    }
+    return true
+  })
+
+  const toggleDifficulty = (difficulty: Difficulty) => {
+    const newSet = new Set(selectedDifficulties)
+    if (newSet.has(difficulty)) {
+      if (newSet.size > 1) {
+        newSet.delete(difficulty)
+      }
+    } else {
+      newSet.add(difficulty)
+    }
+    setSelectedDifficulties(newSet)
+  }
+
+  return (
+    <div className="space-y-6 fade-in">
+      {/* Header */}
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+          Explore Concepts
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400 text-lg">
+          Browse by category and difficulty
+        </p>
+      </div>
+
+      {/* Category Pills - Horizontal Scroll */}
+      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+        <button
+          onClick={() => setSelectedCategory('all')}
+          className={cn(
+            'shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+            selectedCategory === 'all'
+              ? 'bg-blue-500 text-white shadow-sm'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+          )}
+        >
+          All
+        </button>
+        {CATEGORIES.map(cat => (
+          <button
+            key={cat.value}
+            onClick={() => setSelectedCategory(cat.value)}
+            className={cn(
+              'shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+              selectedCategory === cat.value
+                ? 'bg-blue-500 text-white shadow-sm'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+            )}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Difficulty Filter */}
+      <div className="flex gap-2">
+        {([1, 2, 3] as Difficulty[]).map(diff => (
+          <button
+            key={diff}
+            onClick={() => toggleDifficulty(diff)}
+            className={cn(
+              'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+              selectedDifficulties.has(diff)
+                ? getDifficultyColor(diff)
+                : 'bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500'
+            )}
+          >
+            {DIFFICULTY_LABELS[diff]}
+          </button>
+        ))}
+      </div>
+
+      {/* Concept List */}
+      <div className="space-y-3">
+        {filteredConcepts.length === 0 ? (
+          <div className={cn(styles.card, 'text-center py-12')}>
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">
+              No concepts match your filters
+            </p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+              Try adjusting your category or difficulty selection
+            </p>
+          </div>
+        ) : (
+          filteredConcepts.map(concept => (
+            <Link
+              key={concept.id}
+              to={`/concept/${concept.id}`}
+              className={cn(styles.cardHover, 'flex items-center justify-between p-4')}
+            >
+              <div className="min-w-0 flex-1">
+                <h3 className="font-semibold text-gray-900 dark:text-white truncate">
+                  {concept.term}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-0.5">
+                  {concept.definition}
+                </p>
+              </div>
+              <div className="flex items-center gap-3 ml-4 shrink-0">
+                <span className={cn(styles.badge, getCategoryColor(concept.category))}>
+                  {concept.category.replace('_', ' ')}
+                </span>
+                <div className="flex gap-1">
+                  {[1, 2, 3].map(d => (
+                    <div
+                      key={d}
+                      className={cn(
+                        'w-1.5 h-1.5 rounded-full transition-colors duration-200',
+                        d <= concept.difficulty
+                          ? 'bg-blue-500 dark:bg-blue-400'
+                          : 'bg-gray-200 dark:bg-gray-700'
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
+
+      {/* Results count */}
+      {filteredConcepts.length > 0 && (
+        <p className="text-sm text-gray-400 dark:text-gray-500 text-center">
+          {filteredConcepts.length} concept{filteredConcepts.length !== 1 ? 's' : ''} found
+        </p>
+      )}
+    </div>
+  )
+}
