@@ -72,18 +72,18 @@ export default function Quiz() {
     return (
       <div className="space-y-8 fade-in">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+          <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
             Quiz Mode
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-lg">
+          </p>
+          <p className="text-gray-500 dark:text-gray-400">
             Test your knowledge
           </p>
         </div>
 
-        <div className={cn(styles.card, 'space-y-6 p-6')}>
+        <div className={cn(styles.card, 'space-y-6 p-6 border border-gray-100 dark:border-gray-800')}>
           <div className="text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center">
-              <svg className="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-violet-500/10 dark:bg-violet-500/20 flex items-center justify-center">
+              <svg className="h-8 w-8 text-violet-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
               </svg>
             </div>
@@ -120,15 +120,15 @@ export default function Quiz() {
     return (
       <div className="space-y-8 fade-in">
         <div className="text-center space-y-1">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
-            Quiz Complete!
-          </h1>
+          <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
+            Quiz Complete
+          </p>
         </div>
 
-        <div className={cn(styles.card, 'text-center py-12 celebrate')}>
+        <div className={cn(styles.card, 'text-center py-12 celebrate border border-gray-100 dark:border-gray-800')}>
           <div className={cn(
             'text-6xl font-bold mb-2',
-            isGreatScore ? 'text-green-500' : isGoodScore ? 'text-blue-500' : 'text-orange-500'
+            isGreatScore ? 'text-emerald-500' : isGoodScore ? 'text-violet-500' : 'text-rose-400'
           )}>
             {score}%
           </div>
@@ -168,15 +168,15 @@ export default function Quiz() {
         </div>
         <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-500 rounded-full transition-all duration-500 ease-out"
+            className="h-full bg-violet-500 rounded-full transition-all duration-500 ease-out"
             style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
           />
         </div>
       </div>
 
       {/* Question */}
-      <div className={cn(styles.card, 'p-6')}>
-        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+      <div className={cn(styles.card, 'p-6 border border-gray-100 dark:border-gray-800')}>
+        <p className="text-xs font-semibold text-violet-600 dark:text-violet-400 uppercase tracking-wider mb-3">
           What term matches this definition?
         </p>
         <p className="text-xl text-gray-900 dark:text-white leading-relaxed">
@@ -198,23 +198,23 @@ export default function Quiz() {
               disabled={selectedAnswer !== null}
               className={cn(
                 'w-full text-left p-4 rounded-2xl border-2 transition-all duration-200',
-                showResult && isCorrect && 'border-green-500 bg-green-50 dark:bg-green-500/10',
-                showResult && isSelected && !isCorrect && 'border-red-500 bg-red-50 dark:bg-red-500/10',
-                !showResult && 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-500/5 cursor-pointer',
+                showResult && isCorrect && 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10',
+                showResult && isSelected && !isCorrect && 'border-rose-500 bg-rose-50 dark:bg-rose-500/10',
+                !showResult && 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-violet-300 dark:hover:border-violet-700 hover:bg-violet-50/50 dark:hover:bg-violet-500/5 cursor-pointer',
                 !showResult && !isSelected && 'active:scale-[0.98]'
               )}
             >
               <div className="flex items-center justify-between">
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-serif text-lg text-gray-900 dark:text-white">
                   {option}
                 </span>
                 {showResult && isCorrect && (
-                  <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-5 w-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 )}
                 {showResult && isSelected && !isCorrect && (
-                  <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-5 w-5 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 )}

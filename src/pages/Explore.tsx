@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { mockConcepts } from '../lib/mock-data'
-import { getCategoryColor, getDifficultyColor, cn, styles } from '../lib/utils'
+import { getDifficultyColor, cn, styles } from '../lib/utils'
 import { CATEGORIES, DIFFICULTY_LABELS, type Category, type Difficulty } from '../types'
 
 export default function Explore() {
@@ -34,10 +34,10 @@ export default function Explore() {
     <div className="space-y-6 fade-in">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+        <p className="text-sm font-medium text-violet-600 dark:text-violet-400 uppercase tracking-wider">
           Explore Concepts
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">
+        </p>
+        <p className="text-gray-500 dark:text-gray-400">
           Browse by category and difficulty
         </p>
       </div>
@@ -49,7 +49,7 @@ export default function Explore() {
           className={cn(
             'shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
             selectedCategory === 'all'
-              ? 'bg-blue-500 text-white shadow-sm'
+              ? 'bg-violet-600 text-white shadow-sm'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
           )}
         >
@@ -62,7 +62,7 @@ export default function Explore() {
             className={cn(
               'shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
               selectedCategory === cat.value
-                ? 'bg-blue-500 text-white shadow-sm'
+                ? 'bg-violet-600 text-white shadow-sm'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
             )}
           >
@@ -110,10 +110,10 @@ export default function Explore() {
             <Link
               key={concept.id}
               to={`/concept/${concept.id}`}
-              className={cn(styles.cardHover, 'flex items-center justify-between p-4')}
+              className={cn(styles.cardHover, 'flex items-center justify-between p-4 border border-gray-100 dark:border-gray-800')}
             >
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 dark:text-white truncate">
+                <h3 className="font-serif text-lg text-gray-900 dark:text-white truncate">
                   {concept.term}
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 truncate mt-0.5">
@@ -121,9 +121,6 @@ export default function Explore() {
                 </p>
               </div>
               <div className="flex items-center gap-3 ml-4 shrink-0">
-                <span className={cn(styles.badge, getCategoryColor(concept.category))}>
-                  {concept.category.replace('_', ' ')}
-                </span>
                 <div className="flex gap-1">
                   {[1, 2, 3].map(d => (
                     <div
@@ -131,12 +128,15 @@ export default function Explore() {
                       className={cn(
                         'w-1.5 h-1.5 rounded-full transition-colors duration-200',
                         d <= concept.difficulty
-                          ? 'bg-blue-500 dark:bg-blue-400'
+                          ? 'bg-violet-500 dark:bg-violet-400'
                           : 'bg-gray-200 dark:bg-gray-700'
                       )}
                     />
                   ))}
                 </div>
+                <svg className="h-5 w-5 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
               </div>
             </Link>
           ))
