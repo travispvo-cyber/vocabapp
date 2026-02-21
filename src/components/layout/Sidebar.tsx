@@ -5,6 +5,8 @@ import type { Theme } from '../../types'
 interface SidebarProps {
   theme: Theme
   onToggleTheme: () => void
+  collapsed?: boolean
+  onToggleCollapse?: () => void
 }
 
 const navItems = [
@@ -15,43 +17,73 @@ const navItems = [
   { path: '/settings', label: 'Settings', icon: SettingsIcon },
 ]
 
-export default function Sidebar({ theme, onToggleTheme }: SidebarProps) {
+export default function Sidebar({ theme, onToggleTheme, collapsed = false, onToggleCollapse }: SidebarProps) {
   return (
     <div className="flex h-full flex-col bg-white dark:bg-gray-950 border-r border-gray-200/50 dark:border-gray-800/50">
-      {/* Logo */}
-      <div className="flex h-16 items-center px-6">
-        <h1 className="text-xl font-bold text-violet-600 dark:text-violet-400 tracking-tight">DataVocab</h1>
+      {/* Logo & Collapse Toggle */}
+      <div className={cn('flex h-16 items-center justify-between', collapsed ? 'px-4' : 'px-6')}>
+        {!collapsed && (
+          <h1 className="text-xl font-bold text-violet-600 dark:text-violet-400 tracking-tight">DataVocab</h1>
+        )}
+        {collapsed && (
+          <div className="w-8 h-8 rounded-lg bg-violet-500 flex items-center justify-center">
+            <span className="text-white font-bold text-sm">D</span>
+          </div>
+        )}
+        {onToggleCollapse && (
+          <button
+            onClick={onToggleCollapse}
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <svg
+              className={cn('h-5 w-5 transition-transform duration-200', collapsed && 'rotate-180')}
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-2">
+      <nav className={cn('flex-1 space-y-1 py-2', collapsed ? 'px-2' : 'px-3')}>
         {navItems.map(item => (
           <NavLink
             key={item.path}
             to={item.path}
+            title={collapsed ? item.label : undefined}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                'flex items-center rounded-xl text-sm font-medium transition-all duration-200',
+                collapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5',
                 isActive
                   ? 'bg-violet-500/10 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400'
                   : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800/50'
               )
             }
           >
-            <item.icon className="h-5 w-5" />
-            {item.label}
+            <item.icon className={cn(collapsed ? 'h-6 w-6' : 'h-5 w-5')} />
+            {!collapsed && item.label}
           </NavLink>
         ))}
       </nav>
 
       {/* Theme Toggle */}
-      <div className="border-t border-gray-200/50 dark:border-gray-800/50 p-4">
+      <div className={cn('border-t border-gray-200/50 dark:border-gray-800/50', collapsed ? 'p-2' : 'p-4')}>
         <button
           onClick={onToggleTheme}
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800/50 transition-all duration-200"
+          title={collapsed ? (theme === 'light' ? 'Dark Mode' : 'Light Mode') : undefined}
+          className={cn(
+            'flex w-full items-center rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800/50 transition-all duration-200',
+            collapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
+          )}
         >
-          {theme === 'light' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
-          {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+          {theme === 'light' ? <MoonIcon className={cn(collapsed ? 'h-6 w-6' : 'h-5 w-5')} /> : <SunIcon className={cn(collapsed ? 'h-6 w-6' : 'h-5 w-5')} />}
+          {!collapsed && (theme === 'light' ? 'Dark Mode' : 'Light Mode')}
         </button>
       </div>
     </div>

@@ -1,22 +1,36 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { mockConcepts } from '../lib/mock-data'
 import { getDifficultyColor, cn, styles } from '../lib/utils'
 import { CATEGORIES, DIFFICULTY_LABELS, type Category, type Difficulty } from '../types'
 
 export default function Explore() {
+  const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all')
   const [selectedDifficulties, setSelectedDifficulties] = useState<Set<Difficulty>>(new Set([1, 2, 3]))
 
-  const filteredConcepts = mockConcepts.filter(concept => {
-    if (selectedCategory !== 'all' && concept.category !== selectedCategory) {
-      return false
-    }
-    if (!selectedDifficulties.has(concept.difficulty)) {
-      return false
-    }
-    return true
-  })
+  const filteredConcepts = useMemo(() => {
+    return mockConcepts.filter(concept => {
+      // Search filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase()
+        const matchesTerm = concept.term.toLowerCase().includes(query)
+        const matchesDefinition = concept.definition.toLowerCase().includes(query)
+        if (!matchesTerm && !matchesDefinition) {
+          return false
+        }
+      }
+      // Category filter
+      if (selectedCategory !== 'all' && concept.category !== selectedCategory) {
+        return false
+      }
+      // Difficulty filter
+      if (!selectedDifficulties.has(concept.difficulty)) {
+        return false
+      }
+      return true
+    })
+  }, [searchQuery, selectedCategory, selectedDifficulties])
 
   const toggleDifficulty = (difficulty: Difficulty) => {
     const newSet = new Set(selectedDifficulties)
@@ -40,6 +54,32 @@ export default function Explore() {
         <p className="text-gray-500 dark:text-gray-400">
           Browse by category and difficulty
         </p>
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search concepts..."
+          className="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Category Pills - Horizontal Scroll */}

@@ -10,6 +10,10 @@ const mockUserStats = {
   wordsLearnedToday: 3,
   dailyGoal: 5,
   totalWords: 42,
+  quizzesTaken: 15,
+  accuracy: 78,
+  weeklyGoal: 25,
+  weeklyProgress: 18,
 }
 
 function getGreeting(): string {
@@ -140,11 +144,32 @@ export default function Home() {
         </div>
       </Link>
 
+      {/* Statistics Summary */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className={cn(styles.card, 'text-center py-4 border border-gray-100 dark:border-gray-800')}>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{mockUserStats.totalWords}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Words Learned</p>
+        </div>
+        <div className={cn(styles.card, 'text-center py-4 border border-gray-100 dark:border-gray-800')}>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{mockUserStats.quizzesTaken}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Quizzes Taken</p>
+        </div>
+        <div className={cn(styles.card, 'text-center py-4 border border-gray-100 dark:border-gray-800')}>
+          <p className="text-2xl font-bold text-violet-600 dark:text-violet-400">{mockUserStats.accuracy}%</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Accuracy</p>
+        </div>
+      </div>
+
       {/* Recent Concepts */}
       <div className="space-y-4">
-        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-          Recent Concepts
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Recent Concepts
+          </h3>
+          <span className="text-xs text-gray-400 dark:text-gray-500">
+            {mockConcepts.length} available
+          </span>
+        </div>
         <div className="space-y-3">
           {recentConcepts.map(concept => (
             <Link
